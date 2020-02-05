@@ -14,5 +14,9 @@ public class Constant {
 	public static final String AUTHENTICATION_SUCCESSFUL = "Authentication Successful";
 	public static final String AUTHENTICATION_FAILED = "Authentication Failed";
 	public static final Integer AUTHENTICATION_SUCCESSFUL_CODE = 200;
+	
+	//Vendor
+	public static final String VENDOR_ID_NOT_NULL_MESSAGE = "Vendor ID should be not null";
+	public static final String VENDOR_NOT_FOUND = "Vendor not found";
 
 }

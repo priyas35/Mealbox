@@ -37,6 +37,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				.collect(Collectors.toList());
 
 		body.put("errors", errors);
-		return new ResponseEntity<>(body, headers, status);
+		return new ResponseEntity<>(body, headers, HttpStatus.OK);
 	}
 }
