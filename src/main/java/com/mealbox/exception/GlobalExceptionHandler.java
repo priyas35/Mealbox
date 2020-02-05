@@ -41,7 +41,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				.collect(Collectors.toList());
 
 		body.put("errors", errors);
-		return new ResponseEntity<>(body, headers, status);
+		return new ResponseEntity<>(body, headers, HttpStatus.OK);
+	}
+	
+	@ExceptionHandler(VendorNotFoundException.class)
+	public ResponseEntity<ErrorDto> salaryLimitException(VendorNotFoundException ex) {
+		ErrorDto errorDto = new ErrorDto();
+		errorDto.setErrorStatusMessage(ex.getMessage());
+		errorDto.setErrorStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
 	}
 	
 	@ExceptionHandler(EmployeeNotFoundException.class)

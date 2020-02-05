@@ -1,5 +1,6 @@
 package com.mealbox.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,5 @@ public interface VendorFoodRepository extends JpaRepository<VendorFood, Integer>
 
 	Optional<VendorFood> findByVendorIdAndFoodId(Vendor vendor, Food food);
 
+	List<VendorFood> findByVendorId(Vendor vendor);
 }
