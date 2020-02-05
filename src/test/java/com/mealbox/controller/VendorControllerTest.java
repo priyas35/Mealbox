@@ -21,6 +21,7 @@ import com.mealbox.dto.ItemCategoryDto;
 import com.mealbox.dto.ItemDto;
 import com.mealbox.dto.ResponseDto;
 import com.mealbox.dto.VendorDto;
+import com.mealbox.dto.VendorFoodDto;
 import com.mealbox.dto.VendorListResponseDto;
 import com.mealbox.exception.VendorNotFoundException;
 import com.mealbox.service.VendorService;
@@ -40,6 +41,8 @@ public class VendorControllerTest {
 	ItemCategoryDto itemCategoryDto = new ItemCategoryDto();
 
 	VendorDto vendorDto = new VendorDto();
+	VendorFoodDto vendorFoodDto = new VendorFoodDto();
+
 	@Before
 	public void init() {
 
@@ -51,8 +54,10 @@ public class VendorControllerTest {
 		itemCategoryDto.setCategoryName(MealboxEnum.FoodType.VEG);
 
 		itemCategoryList.add(itemCategoryDto);
-		
+
 		vendorDto.setVendorName("Moorthy Hotel");
+
+		vendorFoodDto.setVendorId(1);
 	}
 
 	@Test
@@ -61,7 +66,7 @@ public class VendorControllerTest {
 		ResponseEntity<VendorListResponseDto> response = vendorController.getItemListByVendorId(1);
 		assertThat(response.getBody().getItemcategoryList()).hasSize(1);
 	}
-	
+
 	@Test
 	public void testGetItemListByVendorIdForNegative() throws VendorNotFoundException {
 		List<ItemCategoryDto> itemCategoryListEmpty = new ArrayList<>();
@@ -70,12 +75,19 @@ public class VendorControllerTest {
 		ResponseEntity<VendorListResponseDto> response = vendorController.getItemListByVendorId(1);
 		assertEquals(Constant.NO_RECORDS_FOUND, response.getBody().getMessage());
 	}
-	
+
 	@Test
 	public void tesAddVendor() {
 		vendorService.addVendor(vendorDto);
 		ResponseEntity<ResponseDto> response = vendorController.addVendor(vendorDto);
 		assertEquals(Constant.VENDOR_ADDED_SUCCESSFULLY, response.getBody().getMessage());
+	}
+
+	@Test
+	public void tesAddVendorFood() throws VendorNotFoundException {
+		vendorService.addVendor(vendorDto);
+		ResponseEntity<ResponseDto> response = vendorController.addVendorFood(vendorFoodDto);
+		assertEquals(Constant.VENDOR_FOOD_ADDED_SUCCESSFULLY, response.getBody().getMessage());
 	}
 
 }
