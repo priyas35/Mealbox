@@ -113,7 +113,7 @@ public class VendorServiceImplTest {
 	public void testAddVendorFoodForFoodNotPresent() throws VendorNotFoundException {
 		when(vendorRepository.findById(vendorFoodDto.getVendorId())).thenReturn(Optional.of(vendor));
 		when(foodRepository.findByFoodNameAndFoodType(foodDto.getFoodName(), foodDto.getFoodType()))
-				.thenReturn(Optional.of(food));
+				.thenReturn(Optional.ofNullable(null));
 		vendorServiceImpl.addVendorFood(vendorFoodDto);
 		assertEquals(1, food.getFoodId());
 	}
