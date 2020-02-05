@@ -2,6 +2,8 @@ package com.mealbox.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mealbox.constant.Constant;
 import com.mealbox.dto.ItemCategoryDto;
+import com.mealbox.dto.ResponseDto;
+import com.mealbox.dto.VendorDto;
 import com.mealbox.dto.VendorListResponseDto;
 import com.mealbox.entity.Vendor;
 import com.mealbox.exception.VendorNotFoundException;
@@ -67,7 +73,26 @@ public class VendorController {
 		}
 		return new ResponseEntity<>(vendorListResponseDto, HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Add a new vendor based on the user input.
+	 * 
+	 * @param vendorDto - vendor details for adding a new vendor
+	 * @return details of the response with status code and message
+	 * @author Govindasamy.C
+	 * @since 05-02-2020
+	 * 
+	 */
+	@PostMapping
+	public ResponseEntity<ResponseDto> addVendor(@Valid @RequestBody VendorDto vendorDto) {
+		logger.info("Add a new vendor based on the user input...");
+		vendorService.addVendor(vendorDto);
+		ResponseDto responseDto = new ResponseDto();
+		responseDto.setMessage(Constant.VENDOR_ADDED_SUCCESSFULLY);
+		responseDto.setStatusCode(HttpStatus.OK.value());
+		return new ResponseEntity<>(responseDto, HttpStatus.OK);
+  }
+  
 	/**
 	 * @author PriyaDharshini S.
 	 * @since 2020-02-05. This method will authenticate the employee.

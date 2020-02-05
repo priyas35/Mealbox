@@ -18,6 +18,7 @@ public class Constant {
 	public static final String ORDERED_FOOD_NOT_FOUND = "There is no foods";
 	
 	//Vendor
-	public static final String VENDOR_ID_NOT_NULL_MESSAGE = "Vendor ID should be not null";
+	public static final String VENDOR_NAME_NOT_NULL_MESSAGE = "Vendor Name should be not null";
 	public static final String VENDOR_NOT_FOUND = "Vendor not found";
+	public static final String VENDOR_ADDED_SUCCESSFULLY = "Vendor Added Successfully";
 }

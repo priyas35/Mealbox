@@ -3,13 +3,12 @@ package com.mealbox.service;
 import java.util.List;
 
 import com.mealbox.dto.ItemCategoryDto;
+import com.mealbox.dto.VendorDto;
 import com.mealbox.entity.Vendor;
 import com.mealbox.exception.VendorNotFoundException;
 
 public interface VendorService {
 
-	public List<ItemCategoryDto> getItemListByVendorId(Integer vendorId);
-	
 	/**
 	 * @author PriyaDharshini S.
 	 * @since 2020-02-05. This method will authenticate the employee.
@@ -22,4 +21,6 @@ public interface VendorService {
 	
 	
 	public List<ItemCategoryDto> getItemListByVendorId(Integer vendorId) throws VendorNotFoundException;
+	
+	public void addVendor(VendorDto vendorDto);
 }
