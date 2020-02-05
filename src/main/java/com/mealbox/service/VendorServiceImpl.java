@@ -3,6 +3,17 @@ package com.mealbox.service;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.mealbox.constant.Constant;
+import com.mealbox.dto.ItemCategoryDto;
+import com.mealbox.entity.Vendor;
+import com.mealbox.exception.VendorNotFoundException;
+import com.mealbox.repository.VendorRepository;
+
+import lombok.extern.slf4j.Slf4j;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,8 +45,8 @@ import com.mealbox.repository.VendorRepository;
  *
  */
 @Service
+@Slf4j
 public class VendorServiceImpl implements VendorService {
-	private static final Logger logger = LoggerFactory.getLogger(VendorServiceImpl.class);
 
 	@Autowired
 	VendorRepository vendorRepository;
@@ -43,9 +54,29 @@ public class VendorServiceImpl implements VendorService {
 	@Autowired
 	VendorFoodRepository vendorFoodRepository;
 
+	/**
+	 * @author PriyaDharshini S.
+	 * @since 2020-02-05. This method will authenticate the employee.
+	 * 
+	 * @return list of vendors. which has the list of vendors.
+	 * @throws VendorNotFoundException it will throw the exception if the vendor is
+	 *                                 not there.
+	 */
+	@Override
+	public List<Vendor> getAllVendors() throws VendorNotFoundException {
+		List<Vendor> vendors = vendorRepository.findAll();
+		if(vendors.isEmpty()) {
+			log.info("Entering into VendorServiceImpl:"+Constant.VENDOR_NOT_FOUND);
+			throw new VendorNotFoundException(Constant.VENDOR_NOT_FOUND);
+		}else {
+			log.info("Entering into VendorServiceImpl:getting list of vendors");
+			return vendors;
+		}
+	}
+	
 	@Override
 	public List<ItemCategoryDto> getItemListByVendorId(Integer vendorId) throws VendorNotFoundException {
-		logger.info("Vendor Service - get the vendor item list based on vendorId...");
+		log.info("Vendor Service - get the vendor item list based on vendorId...");
 		// Check the Vendor is present or not by giving vendorId.
 		Optional<Vendor> vendor = vendorRepository.findById(vendorId);
 		if (!vendor.isPresent()) {
@@ -79,5 +110,4 @@ public class VendorServiceImpl implements VendorService {
 
 		return itemCategoryDtos;
 	}
-
 }
