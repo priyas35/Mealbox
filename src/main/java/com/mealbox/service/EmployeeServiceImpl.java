@@ -30,6 +30,7 @@ import com.mealbox.entity.VendorFood;
 import com.mealbox.exception.EmployeeNotFoundException;
 import com.mealbox.exception.FoodNotFoundException;
 import com.mealbox.exception.OrderNotFoundException;
+import com.mealbox.exception.VendorNotFoundException;
 import com.mealbox.repository.EmployeeRepository;
 import com.mealbox.repository.FoodOrderItemRepository;
 import com.mealbox.repository.FoodOrderRepository;
@@ -132,7 +133,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<FoodOrderItem> foodOrderList=foodDetailList.stream().map(index->{
 			try {
 				return convertToFoodOrderItem(index,orderRequestDto.getVendorId(),foodOrder);
-			} catch (EmployeeNotFoundException | FoodNotFoundException e) {
+			} catch (EmployeeNotFoundException | FoodNotFoundException |VendorNotFoundException  e) {
 				log.error("Exception occured in placeOrder() method of EmployeeServiceImpl:"+e.getMessage());
 			}
 			return null;
@@ -153,11 +154,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return orderResponseDto;
 	}
 	
-	private FoodOrderItem convertToFoodOrderItem(FoodDetail foodDetail,Integer vendorId,FoodOrder foodOrder) throws EmployeeNotFoundException, FoodNotFoundException {	
+	/**
+	 * This method converts the list obtained from UI to the FoodOrderItem Object mapping by entities
+	 * 
+	 * @author Chethana
+	 * @param foodDetail - contains foodId,quantity
+	 * @param vendorId - cafe stall Id
+	 * @param foodOrder - FoodOrder table object->contains order details
+	 * @return FoodOrderItem - converted persistent object type
+	 * @throws EmployeeNotFoundException - when the logged on employee is invalid
+	 * @throws FoodNotFoundException - when the ordered food is invalid
+	 * @throws VendorNotFoundException - when the vendor is invalid
+	 * 
+	 */
+	private FoodOrderItem convertToFoodOrderItem(FoodDetail foodDetail,Integer vendorId,FoodOrder foodOrder) throws EmployeeNotFoundException, FoodNotFoundException, VendorNotFoundException {	
 		Optional<Vendor> vendor=vendorRepository.findById(vendorId);
 		if(!vendor.isPresent()) {
 			log.error("Exception occured in convertToFoodOrder() method of EmployeeServiceImpl:"+Constant.VENDOR_NOT_FOUND);
-			throw new EmployeeNotFoundException(Constant.VENDOR_NOT_FOUND);
+			throw new VendorNotFoundException(Constant.VENDOR_NOT_FOUND);
 		}
 		
 		Optional<Food> food=foodRepository.findById(foodDetail.getFoodId());
@@ -168,8 +182,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		Optional<VendorFood> vendorFood=vendorFoodRepository.findByVendorIdAndFoodId(vendor.get(),food.get());
 		if(!vendorFood.isPresent()) {
-			log.error("Exception occured in convertToFoodOrder() method of EmployeeServiceImpl:"+Constant.FOOD_NOT_FOUND);
-			throw new FoodNotFoundException(Constant.FOOD_NOT_FOUND);
+			log.error("Exception occured in convertToFoodOrder() method of EmployeeServiceImpl:"+Constant.FOOD_UNAVAILABLE);
+			throw new FoodNotFoundException(Constant.FOOD_UNAVAILABLE);
 		}
 		
 		FoodOrderItem foodOrderItem= new FoodOrderItem();

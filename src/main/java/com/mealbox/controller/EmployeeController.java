@@ -56,13 +56,26 @@ public class EmployeeController {
 		return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
 	}
 
+	/**
+	 * This method is used to place a new order from the existing authorized vendor stall with their available food menu
+	 * 
+	 * @author Chethana
+	 * @param orderRequestDto - Takes parameters like Food Details,Vendor Id,Payment Opted
+	 * @param employeeId - takes of type Long which is the Employee SAP Id
+	 * @return OrderResponseDto - returns places order Id along with the status codes
+	 * @throws EmployeeNotFoundException -  thrown when the logged in employee details is invalid
+	 * @throws FoodNotFoundException - thrown when the Food ordered doesn't belong to the existing menu
+	 * @since 05-February-2020
+	 */
 	@PostMapping("{/{employeeId}/orders}")
-	public ResponseEntity<OrderResponseDto> placeOrder(@Valid @RequestBody OrderRequestDto orderRequestDto,@PathVariable Long employeeId) throws EmployeeNotFoundException, FoodNotFoundException{
+	public ResponseEntity<OrderResponseDto> placeOrder(@Valid @RequestBody OrderRequestDto orderRequestDto,
+			@PathVariable Long employeeId) throws EmployeeNotFoundException, FoodNotFoundException {
 		log.info("Entering into placeOrder() method of EmployeeController");
-		OrderResponseDto orderResponseDto=employeeService.placeOrder(orderRequestDto, employeeId);
+		OrderResponseDto orderResponseDto = employeeService.placeOrder(orderRequestDto, employeeId);
 		orderResponseDto.setStatusCode(Constant.AUTHENTICATION_SUCCESSFUL_CODE);
-		return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);	
+		return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);
 	}
+
 	/**
 	 * @author PriyaDharshini S.
 	 * @since 2020-02-05. This method will get particular order details by passing

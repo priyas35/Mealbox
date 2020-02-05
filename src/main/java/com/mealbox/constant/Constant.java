@@ -32,4 +32,7 @@ public class Constant {
 	//Vendor Food
 	public static final String VENDOR_FOOD_NAME_NOT_NULL_MESSAGE = "Vendor food name should be not null";
 	public static final String VENDOR_FOOD_TYPE_NOT_NULL_MESSAGE = "Vendor food type should be not null";
+	
+	public static final String FOOD_UNAVAILABLE = "Food Item is not available with this current vendor";
+	
 }
