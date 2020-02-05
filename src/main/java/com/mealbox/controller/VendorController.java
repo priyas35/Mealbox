@@ -2,6 +2,8 @@ package com.mealbox.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ import com.mealbox.service.VendorService;
 @RequestMapping("/vendors")
 @CrossOrigin
 public class VendorController {
+	private static final Logger logger = LoggerFactory.getLogger(VendorController.class);
 
 	@Autowired
 	VendorService vendorService;
@@ -43,11 +46,15 @@ public class VendorController {
 	 * @return return the status code and message along with the vendor item list
 	 *         details.
 	 * @author Govindasamy.C
+	 * @throws VendorNotFoundException - throws the VendorNotFoundException while
+	 *                                 giving the wrong id and incorrect data.
 	 * @since 05-02-2020
 	 * 
 	 */
 	@GetMapping("/{vendorId}")
-	public ResponseEntity<VendorListResponseDto> getItemListByVendorId(@PathVariable Integer vendorId) {
+	public ResponseEntity<VendorListResponseDto> getItemListByVendorId(@PathVariable Integer vendorId)
+			throws VendorNotFoundException {
+		logger.info("get the vendor item list based on vendorId...");
 		List<ItemCategoryDto> itemCategorylist = vendorService.getItemListByVendorId(vendorId);
 		VendorListResponseDto vendorListResponseDto = new VendorListResponseDto();
 		if (itemCategorylist.isEmpty()) {
@@ -56,6 +63,7 @@ public class VendorController {
 		} else {
 			vendorListResponseDto.setStatusCode(HttpStatus.OK.value());
 			vendorListResponseDto.setMessage(Constant.SUCCESS_MESSAGE);
+			vendorListResponseDto.setItemcategoryList(itemCategorylist);
 		}
 		return new ResponseEntity<>(vendorListResponseDto, HttpStatus.OK);
 	}
@@ -72,5 +80,4 @@ public class VendorController {
 	public ResponseEntity<List<Vendor>> getAllVendors() throws VendorNotFoundException{
 		return new ResponseEntity<>(vendorService.getAllVendors(),HttpStatus.OK);
 	}
-	
 }

@@ -21,4 +21,5 @@ public interface VendorService {
 	List<Vendor> getAllVendors() throws VendorNotFoundException;
 	
 	
+	public List<ItemCategoryDto> getItemListByVendorId(Integer vendorId) throws VendorNotFoundException;
 }

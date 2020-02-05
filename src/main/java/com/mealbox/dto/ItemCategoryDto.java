@@ -2,6 +2,8 @@ package com.mealbox.dto;
 
 import java.util.List;
 
+import com.mealbox.common.MealboxEnum.FoodType;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class ItemCategoryDto {
 
-	private String categoryName;
+	private FoodType categoryName;
 	private List<ItemDto> itemList;
 }
