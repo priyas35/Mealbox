@@ -12,7 +12,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.mealbox.common.MealboxEnum;
@@ -20,10 +22,11 @@ import com.mealbox.constant.Constant;
 import com.mealbox.dto.ItemCategoryDto;
 import com.mealbox.dto.ItemDto;
 import com.mealbox.dto.VendorListResponseDto;
+import com.mealbox.entity.Vendor;
 import com.mealbox.exception.VendorNotFoundException;
 import com.mealbox.service.VendorService;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class VendorControllerTest {
 
 	@InjectMocks
@@ -36,6 +39,8 @@ public class VendorControllerTest {
 	List<ItemDto> itemDtos = new ArrayList<>();
 	ItemDto itemDto = new ItemDto();
 	ItemCategoryDto itemCategoryDto = new ItemCategoryDto();
+	Vendor vendor = new Vendor();
+	List<Vendor> vendors = new ArrayList<>();
 
 	@Before
 	public void init() {
@@ -48,7 +53,11 @@ public class VendorControllerTest {
 		itemCategoryDto.setCategoryName(MealboxEnum.FoodType.VEG);
 
 		itemCategoryList.add(itemCategoryDto);
+		vendor.setVendorId(1);
+		vendors.add(vendor);
 	}
+	
+	
 
 	@Test
 	public void testGetItemListByVendorId() throws VendorNotFoundException {
@@ -56,7 +65,7 @@ public class VendorControllerTest {
 		ResponseEntity<VendorListResponseDto> response = vendorController.getItemListByVendorId(1);
 		assertThat(response.getBody().getItemcategoryList()).hasSize(1);
 	}
-	
+
 	@Test
 	public void testGetItemListByVendorIdForNegative() throws VendorNotFoundException {
 		List<ItemCategoryDto> itemCategoryListEmpty = new ArrayList<>();
@@ -65,5 +74,13 @@ public class VendorControllerTest {
 		ResponseEntity<VendorListResponseDto> response = vendorController.getItemListByVendorId(1);
 		assertEquals(response.getBody().getMessage(), Constant.NO_RECORDS_FOUND);
 	}
+
+	@Test
+	public void testGetAllVendors() throws VendorNotFoundException {
+		Mockito.when(vendorService.getAllVendors()).thenReturn(vendors);
+		ResponseEntity<List<Vendor>> actual = vendorController.getAllVendors();
+		assertEquals(HttpStatus.OK, actual.getStatusCode());
+	}
+	
 
 }

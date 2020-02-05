@@ -8,8 +8,6 @@ import com.mealbox.exception.VendorNotFoundException;
 
 public interface VendorService {
 
-	public List<ItemCategoryDto> getItemListByVendorId(Integer vendorId);
-	
 	/**
 	 * @author PriyaDharshini S.
 	 * @since 2020-02-05. This method will authenticate the employee.

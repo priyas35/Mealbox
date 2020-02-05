@@ -3,22 +3,9 @@ package com.mealbox.service;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.mealbox.constant.Constant;
-import com.mealbox.dto.ItemCategoryDto;
-import com.mealbox.entity.Vendor;
-import com.mealbox.exception.VendorNotFoundException;
-import com.mealbox.repository.VendorRepository;
-
-import lombok.extern.slf4j.Slf4j;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +21,8 @@ import com.mealbox.entity.VendorFood;
 import com.mealbox.exception.VendorNotFoundException;
 import com.mealbox.repository.VendorFoodRepository;
 import com.mealbox.repository.VendorRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * In this VendorServiceImpl Class we can handled the methods of get item list
@@ -65,15 +54,15 @@ public class VendorServiceImpl implements VendorService {
 	@Override
 	public List<Vendor> getAllVendors() throws VendorNotFoundException {
 		List<Vendor> vendors = vendorRepository.findAll();
-		if(vendors.isEmpty()) {
-			log.info("Entering into VendorServiceImpl:"+Constant.VENDOR_NOT_FOUND);
+		if (vendors.isEmpty()) {
+			log.info("Entering into VendorServiceImpl:" + Constant.VENDOR_NOT_FOUND);
 			throw new VendorNotFoundException(Constant.VENDOR_NOT_FOUND);
-		}else {
+		} else {
 			log.info("Entering into VendorServiceImpl:getting list of vendors");
 			return vendors;
 		}
 	}
-	
+
 	@Override
 	public List<ItemCategoryDto> getItemListByVendorId(Integer vendorId) throws VendorNotFoundException {
 		log.info("Vendor Service - get the vendor item list based on vendorId...");
@@ -87,9 +76,7 @@ public class VendorServiceImpl implements VendorService {
 		List<VendorFood> vendorFoods = vendorFoodRepository.findByVendorId(vendor.get());
 
 		// Filter the foods from the vendor food list
-		List<Food> foods = vendorFoods.stream()
-				.map(vendorFood -> vendorFood.getFoodId())
-				.collect(Collectors.toList());
+		List<Food> foods = vendorFoods.stream().map(vendorFood -> vendorFood.getFoodId()).collect(Collectors.toList());
 
 		List<ItemCategoryDto> itemCategoryDtos = new ArrayList<>();
 
@@ -102,7 +89,7 @@ public class VendorServiceImpl implements VendorService {
 			// Filter the food by category wise and mapping the food entity values to dto.
 			List<ItemDto> itemList = foods.stream().filter(food -> food.getFoodType().equals(foodType))
 					.map(food -> FoodConverter.convertEntityToDto(food)).collect(Collectors.toList());
-			
+
 			// Set the itemList to response dto.
 			itemCategoryDto.setItemList(itemList);
 			itemCategoryDtos.add(itemCategoryDto);
