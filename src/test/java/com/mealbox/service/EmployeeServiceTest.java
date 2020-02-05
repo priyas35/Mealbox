@@ -67,8 +67,8 @@ public class EmployeeServiceTest {
 
 		employee.setEmployeeId(1L);
 		employee.setPassword("priya");
-        employee.setEmployeeName("sri");
-        employee.setRole(Role.EMPLOYEE);
+		employee.setEmployeeName("sri");
+		employee.setRole(Role.EMPLOYEE);
 		food.setFoodId(1);
 		food.setFoodName("biryani");
 
