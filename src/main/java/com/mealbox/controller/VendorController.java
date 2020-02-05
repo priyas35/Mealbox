@@ -26,6 +26,7 @@ import com.mealbox.service.VendorService;
  */
 @RestController
 @RequestMapping("/vendors")
+@CrossOrigin
 public class VendorController {
 
 	@Autowired
@@ -53,5 +54,4 @@ public class VendorController {
 			vendorListResponseDto.setMessage(Constant.SUCCESS_MESSAGE);
 		}
 		return new ResponseEntity<>(vendorListResponseDto, HttpStatus.OK);
-	}
 }
