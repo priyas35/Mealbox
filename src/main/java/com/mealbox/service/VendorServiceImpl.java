@@ -86,6 +86,15 @@ public class VendorServiceImpl implements VendorService {
 		return itemCategoryDtos;
 	}
 
+	/**
+	 * Add a new vendor based on the user input.
+	 * 
+	 * @param vendorDto - vendor details for adding a new vendor
+	 * @return details of the response with status code and message
+	 * @author Govindasamy.C
+	 * @since 05-02-2020
+	 * 
+	 */
 	@Override
 	public void addVendor(VendorDto vendorDto) {
 		log.info("Add a new vendor based on the user input...");
