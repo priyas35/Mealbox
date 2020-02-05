@@ -44,7 +44,8 @@ public class VendorController {
 	 * @return return the status code and message along with the vendor item list
 	 *         details.
 	 * @author Govindasamy.C
-	 * @throws VendorNotFoundException
+	 * @throws VendorNotFoundException - throws the VendorNotFoundException while
+	 *                                 giving the wrong id and incorrect data.
 	 * @since 05-02-2020
 	 * 
 	 */
