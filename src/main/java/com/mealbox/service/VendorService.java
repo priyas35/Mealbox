@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mealbox.dto.ItemCategoryDto;
 import com.mealbox.dto.VendorDto;
+import com.mealbox.dto.VendorFoodDto;
 import com.mealbox.entity.Vendor;
 import com.mealbox.exception.VendorNotFoundException;
 
@@ -23,4 +24,7 @@ public interface VendorService {
 	public List<ItemCategoryDto> getItemListByVendorId(Integer vendorId) throws VendorNotFoundException;
 	
 	public void addVendor(VendorDto vendorDto);
+	
+	public void addVendorFood(VendorFoodDto vendorFoodDto) throws VendorNotFoundException;
+
 }

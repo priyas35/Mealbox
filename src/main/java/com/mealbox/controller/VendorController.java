@@ -21,6 +21,7 @@ import com.mealbox.constant.Constant;
 import com.mealbox.dto.ItemCategoryDto;
 import com.mealbox.dto.ResponseDto;
 import com.mealbox.dto.VendorDto;
+import com.mealbox.dto.VendorFoodDto;
 import com.mealbox.dto.VendorListResponseDto;
 import com.mealbox.entity.Vendor;
 import com.mealbox.exception.VendorNotFoundException;
@@ -91,18 +92,39 @@ public class VendorController {
 		responseDto.setMessage(Constant.VENDOR_ADDED_SUCCESSFULLY);
 		responseDto.setStatusCode(HttpStatus.OK.value());
 		return new ResponseEntity<>(responseDto, HttpStatus.OK);
-  }
-  
+	}
+
 	/**
 	 * @author PriyaDharshini S.
 	 * @since 2020-02-05. This method will authenticate the employee.
 	 * 
 	 * @return list of vendors. which has the list of vendors.
-	 * @throws VendorNotFoundException it will throw the exception if the vendor
-	 *                                   is not there.
+	 * @throws VendorNotFoundException it will throw the exception if the vendor is
+	 *                                 not there.
 	 */
 	@GetMapping
-	public ResponseEntity<List<Vendor>> getAllVendors() throws VendorNotFoundException{
-		return new ResponseEntity<>(vendorService.getAllVendors(),HttpStatus.OK);
+	public ResponseEntity<List<Vendor>> getAllVendors() throws VendorNotFoundException {
+		return new ResponseEntity<>(vendorService.getAllVendors(), HttpStatus.OK);
+	}
+
+	/**
+	 * Add a new vendor food based on the vendor.
+	 * 
+	 * @param vendorDto - vendor details for adding a new vendor
+	 * @return details of the response with status code and message
+	 * @author Govindasamy.C
+	 * @throws VendorNotFoundException
+	 * @since 05-02-2020
+	 * 
+	 */
+	@PostMapping("/foods")
+	public ResponseEntity<ResponseDto> addVendorFood(@Valid @RequestBody VendorFoodDto vendorFoodDto)
+			throws VendorNotFoundException {
+		logger.info("Add a new vendor based on the user input...");
+		vendorService.addVendorFood(vendorFoodDto);
+		ResponseDto responseDto = new ResponseDto();
+		responseDto.setMessage(Constant.VENDOR_FOOD_ADDED_SUCCESSFULLY);
+		responseDto.setStatusCode(HttpStatus.OK.value());
+		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}
 }
