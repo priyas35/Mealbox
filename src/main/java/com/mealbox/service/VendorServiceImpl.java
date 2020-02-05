@@ -145,15 +145,28 @@ public class VendorServiceImpl implements VendorService {
 			throw new VendorNotFoundException(Constant.VENDOR_NOT_FOUND);
 		}
 
+		// Get the food item list from user input.
 		List<FoodDto> foodDtos = vendorFoodDto.getFoodItemList();
 
+		// Filter and map the values of the vendor food object.
 		List<VendorFood> vendorFoods = foodDtos.stream().map(foodDto -> convertDtoToEntity(foodDto, vendor.get()))
 				.collect(Collectors.toList());
 
+		// Save all the food items for the vendor.
 		vendorFoodRepository.saveAll(vendorFoods);
 	}
 
+	/**
+	 * Convert the dto values to vendor food entity
+	 * 
+	 * @param foodDto - details of the food such as foodName and rate
+	 * @param vendor  - details of the vendor object
+	 * @return vendorFood object after check and set the values of the user
+	 * @author Govindasamy.C
+	 * @since 05-02-2020
+	 */
 	private VendorFood convertDtoToEntity(FoodDto foodDto, Vendor vendor) {
+		log.info("convert the food details to vendorfood...");
 		VendorFood vendorFood = new VendorFood();
 
 		Optional<Food> food = foodRepository.findByFoodNameAndFoodType(foodDto.getFoodName(), foodDto.getFoodType());
