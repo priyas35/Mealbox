@@ -19,7 +19,10 @@ import com.mealbox.constant.Constant;
 import com.mealbox.dto.LoginRequestDto;
 import com.mealbox.dto.LoginResponseDto;
 import com.mealbox.dto.OrderDetailsResponseDto;
+import com.mealbox.dto.OrderRequestDto;
+import com.mealbox.dto.OrderResponseDto;
 import com.mealbox.exception.EmployeeNotFoundException;
+import com.mealbox.exception.FoodNotFoundException;
 import com.mealbox.exception.OrderNotFoundException;
 import com.mealbox.service.EmployeeService;
 
@@ -51,6 +54,26 @@ public class EmployeeController {
 		loginResponseDto.setMessage(Constant.AUTHENTICATION_SUCCESSFUL);
 		loginResponseDto.setStatusCode(Constant.AUTHENTICATION_SUCCESSFUL_CODE);
 		return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
+	}
+
+	/**
+	 * This method is used to place a new order from the existing authorized vendor stall with their available food menu
+	 * 
+	 * @author Chethana
+	 * @param orderRequestDto - Takes parameters like Food Details,Vendor Id,Payment Opted
+	 * @param employeeId - takes of type Long which is the Employee SAP Id
+	 * @return OrderResponseDto - returns places order Id along with the status codes
+	 * @throws EmployeeNotFoundException -  thrown when the logged in employee details is invalid
+	 * @throws FoodNotFoundException - thrown when the Food ordered doesn't belong to the existing menu
+	 * @since 05-February-2020
+	 */
+	@PostMapping("{/{employeeId}/orders}")
+	public ResponseEntity<OrderResponseDto> placeOrder(@Valid @RequestBody OrderRequestDto orderRequestDto,
+			@PathVariable Long employeeId) throws EmployeeNotFoundException, FoodNotFoundException {
+		log.info("Entering into placeOrder() method of EmployeeController");
+		OrderResponseDto orderResponseDto = employeeService.placeOrder(orderRequestDto, employeeId);
+		orderResponseDto.setStatusCode(Constant.AUTHENTICATION_SUCCESSFUL_CODE);
+		return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);
 	}
 
 	/**
