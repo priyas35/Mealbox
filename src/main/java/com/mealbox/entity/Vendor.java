@@ -18,4 +18,5 @@ public class Vendor {
 	private Integer vendorId;
 	private String vendorName;
 	private Double rating;
+	private String imageUrl;
 }

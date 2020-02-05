@@ -1,6 +1,5 @@
 package com.mealbox.dto;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.mealbox.common.MealboxEnum.FoodType;
