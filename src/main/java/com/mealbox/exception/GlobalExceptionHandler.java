@@ -43,11 +43,28 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		body.put("errors", errors);
 		return new ResponseEntity<>(body, headers, HttpStatus.OK);
 	}
-	
+
 	@ExceptionHandler(VendorNotFoundException.class)
-	public ResponseEntity<ErrorDto> salaryLimitException(VendorNotFoundException ex) {
+	public ResponseEntity<ErrorDto> vendorNotFoundException(VendorNotFoundException ex) {
 		ErrorDto errorDto = new ErrorDto();
-		errorDto.setErrorStatusMessage(ex.getMessage());
+		errorDto.setErrorStatusMessage(Constant.VENDOR_NOT_FOUND);
+		errorDto.setErrorStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
+	}
+	
+	@ExceptionHandler(OrderNotFoundException.class)
+	public ResponseEntity<ErrorDto> orderNotFoundException(OrderNotFoundException ex) {
+		ErrorDto errorDto = new ErrorDto();
+		errorDto.setErrorStatusMessage(Constant.ORDER_NOT_FOUND);
+		errorDto.setErrorStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
+	}
+	
+	
+	@ExceptionHandler(EmployeeNotFoundException.class)
+	public ResponseEntity<ErrorDto> employeeNotFoundException(EmployeeNotFoundException ex) {
+		ErrorDto errorDto = new ErrorDto();
+		errorDto.setErrorStatusMessage(Constant.EMPLOYEE_NOT_FOUND);
 		errorDto.setErrorStatusCode(HttpStatus.NOT_FOUND.value());
 		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
 	}
@@ -67,4 +84,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		errorDto.setErrorStatusCode(HttpStatus.NOT_FOUND.value());
 		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
 	}
+	
+	
 }

@@ -12,7 +12,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.mealbox.common.MealboxEnum;
@@ -23,10 +25,11 @@ import com.mealbox.dto.ResponseDto;
 import com.mealbox.dto.VendorDto;
 import com.mealbox.dto.VendorFoodDto;
 import com.mealbox.dto.VendorListResponseDto;
+import com.mealbox.entity.Vendor;
 import com.mealbox.exception.VendorNotFoundException;
 import com.mealbox.service.VendorService;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class VendorControllerTest {
 
 	@InjectMocks
@@ -39,6 +42,8 @@ public class VendorControllerTest {
 	List<ItemDto> itemDtos = new ArrayList<>();
 	ItemDto itemDto = new ItemDto();
 	ItemCategoryDto itemCategoryDto = new ItemCategoryDto();
+	Vendor vendor = new Vendor();
+	List<Vendor> vendors = new ArrayList<>();
 
 	VendorDto vendorDto = new VendorDto();
 	VendorFoodDto vendorFoodDto = new VendorFoodDto();
@@ -54,11 +59,15 @@ public class VendorControllerTest {
 		itemCategoryDto.setCategoryName(MealboxEnum.FoodType.VEG);
 
 		itemCategoryList.add(itemCategoryDto);
+		vendor.setVendorId(1);
+		vendors.add(vendor);
 
 		vendorDto.setVendorName("Moorthy Hotel");
 
 		vendorFoodDto.setVendorId(1);
 	}
+	
+	
 
 	@Test
 	public void testGetItemListByVendorId() throws VendorNotFoundException {
@@ -89,5 +98,13 @@ public class VendorControllerTest {
 		ResponseEntity<ResponseDto> response = vendorController.addVendorFood(vendorFoodDto);
 		assertEquals(Constant.VENDOR_FOOD_ADDED_SUCCESSFULLY, response.getBody().getMessage());
 	}
+
+	@Test
+	public void testGetAllVendors() throws VendorNotFoundException {
+		Mockito.when(vendorService.getAllVendors()).thenReturn(vendors);
+		ResponseEntity<List<Vendor>> actual = vendorController.getAllVendors();
+		assertEquals(HttpStatus.OK, actual.getStatusCode());
+	}
+	
 
 }
