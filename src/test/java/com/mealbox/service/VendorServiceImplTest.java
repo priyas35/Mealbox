@@ -47,17 +47,20 @@ public class VendorServiceImplTest {
 	Vendor vendor = new Vendor();
 	Food food = new Food();
 	VendorFood vendorFood = new VendorFood();
-	VendorDto vendorDto = new VendorDto();
-
+	List<Vendor> vendors = new ArrayList<>();
+  
+  VendorDto vendorDto = new VendorDto();
 	VendorFoodDto vendorFoodDto = new VendorFoodDto();
 	FoodDto foodDto = new FoodDto();
 
 	List<FoodDto> foodDtos = new ArrayList<>();
-	
+
 	@Before
 	public void init() {
+    
 		vendor.setVendorId(1);
 		vendor.setVendorName("Moorthy Hotel");
+		vendors.add(vendor);
 
 		food.setFoodId(1);
 		food.setFoodType(MealboxEnum.FoodType.VEG);
@@ -94,6 +97,20 @@ public class VendorServiceImplTest {
 	}
 
 	@Test
+	public void testGetAllVendors() throws VendorNotFoundException {
+		Mockito.when(vendorRepository.findAll()).thenReturn(vendors);
+		List<Vendor> actual = vendorServiceImpl.getAllVendors();
+		assertEquals(1, actual.size());
+	}
+
+	@Test(expected = VendorNotFoundException.class)
+	public void testGetAllVendorsForVendorNotFoundException() throws VendorNotFoundException {
+		vendors = new ArrayList<>();
+		Mockito.when(vendorRepository.findAll()).thenReturn(vendors);
+		vendorServiceImpl.getAllVendors();
+	}
+  
+  @Test
 	public void testAddVendor() {
 		when(vendorRepository.save(Mockito.any())).thenReturn(vendor);
 		vendorServiceImpl.addVendor(vendorDto);
