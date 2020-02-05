@@ -51,7 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Optional<Employee> employee = employeeRepository.findByEmployeeIdAndPassword(loginRequestDto.getEmployeeId(),
 				loginRequestDto.getPassword());
 		if (!employee.isPresent()) {
-			log.error("Entering into EmployeeServiceImpl:" + Constant.EMPLOYEE_NOT_FOUND);
+			log.error("Entering into EmployeeServiceImpl authenticateEmployee method:" + Constant.EMPLOYEE_NOT_FOUND);
 			throw new EmployeeNotFoundException(Constant.EMPLOYEE_NOT_FOUND);
 		} else {
 			LoginResponseDto loginResponseDto = new LoginResponseDto();
@@ -63,7 +63,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 	}
 
-	
 	/**
 	 * @author PriyaDharshini S.
 	 * @since 2020-02-05. This method will get particular order details by passing
@@ -81,15 +80,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 			throws EmployeeNotFoundException, OrderNotFoundException {
 		Optional<Employee> employee = employeeRepository.findById(employeeId);
 		if (!employee.isPresent()) {
+			log.error("Entering into EmployeeServiceImpl getMyOrder method:" + Constant.EMPLOYEE_NOT_FOUND);
 			throw new EmployeeNotFoundException(Constant.EMPLOYEE_NOT_FOUND);
 		}
 		List<FoodOrder> foodOrder = foodOrderRepository.findByEmployeeId(employee.get());
 		if (foodOrder.isEmpty()) {
+			log.error("Entering into EmployeeServiceImpl getMyOrder method:" + Constant.ORDER_NOT_FOUND);
 			throw new OrderNotFoundException(Constant.ORDER_NOT_FOUND);
 		}
 		List<OrderDetailsResponseDto> myOrders = new ArrayList<>();
+		log.info("Entering into EmployeeServiceImpl getMyOrder method:Getting my order details");
 		foodOrder.forEach(foodOrders -> {
-		
 			List<FoodOrderItem> foodOrderItems = foodOrderItemRepository.findByFoodOrderId(foodOrders);
 			OrderDetailsResponseDto orderDetailsResponseDto = new OrderDetailsResponseDto();
 			BeanUtils.copyProperties(foodOrders, orderDetailsResponseDto);
@@ -97,7 +98,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			foodOrderItems.forEach(orderedFoods -> {
 				OrderedFoodDto orderedFoodDto = new OrderedFoodDto();
 				orderedFoodDto.setFoodName(orderedFoods.getVendorFoodId().getFoodId().getFoodName());
-			    orderedFoodDto.setVendorName(orderedFoods.getVendorFoodId().getVendorId().getVendorName());
+				orderedFoodDto.setVendorName(orderedFoods.getVendorFoodId().getVendorId().getVendorName());
 				orderedFoodDto.setQuantity(orderedFoods.getQuantity());
 				foodOrderedList.add(orderedFoodDto);
 			});
