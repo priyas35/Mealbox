@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.mealbox.entity.Employee;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	Optional<Employee> findByEmployeeIdAndPassword(Long employeeId, String password);
 

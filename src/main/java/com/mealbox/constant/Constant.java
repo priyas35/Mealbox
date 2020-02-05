@@ -14,5 +14,8 @@ public class Constant {
 	public static final String AUTHENTICATION_SUCCESSFUL = "Authentication Successful";
 	public static final String AUTHENTICATION_FAILED = "Authentication Failed";
 	public static final Integer AUTHENTICATION_SUCCESSFUL_CODE = 200;
+	public static final String VENDOR_NOT_FOUND = "Vendor not found";
+	public static final String ORDER_NOT_FOUND = "Order not found";
+	public static final String ORDERED_FOOD_NOT_FOUND = "There is no foods";
 
 }
