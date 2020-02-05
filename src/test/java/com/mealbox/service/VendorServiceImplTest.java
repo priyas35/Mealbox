@@ -61,4 +61,10 @@ public class VendorServiceImplTest {
 		List<ItemCategoryDto> response = vendorServiceImpl.getItemListByVendorId(1);
 		assertThat(response).hasSize(2);
 	}
+	
+	@Test(expected = VendorNotFoundException.class)
+	public void testGetItemListByVendorIdForVendorNotFound() throws VendorNotFoundException {
+		when(vendorRepository.findById(1)).thenReturn(Optional.ofNullable(null));
+		vendorServiceImpl.getItemListByVendorId(1);
+	}
 }
