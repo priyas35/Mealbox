@@ -21,6 +21,7 @@ public class Employee {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer employeeId;
 	private String employeeName;
+	private String password;
 	private String email;
 	private Long mobile; 
 	@Enumerated(EnumType.STRING)
