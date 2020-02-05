@@ -12,8 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.mealbox.constant.Constant;
+import com.mealbox.dto.ErrorDto;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -38,5 +42,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 		body.put("errors", errors);
 		return new ResponseEntity<>(body, headers, status);
+	}
+	
+	@ExceptionHandler(EmployeeNotFoundException.class)
+	public ResponseEntity<ErrorDto> employeeNotFoundException(){
+		ErrorDto errorDto= new ErrorDto();
+		errorDto.setErrorStatusMessage(Constant.EMPLOYEE_NOT_FOUND);
+		errorDto.setErrorStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
+	}
+	
+	@ExceptionHandler(FoodNotFoundException.class)
+	public ResponseEntity<ErrorDto> foodNotFoundException(){
+		ErrorDto errorDto= new ErrorDto();
+		errorDto.setErrorStatusMessage(Constant.FOOD_NOT_FOUND);
+		errorDto.setErrorStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
 	}
 }

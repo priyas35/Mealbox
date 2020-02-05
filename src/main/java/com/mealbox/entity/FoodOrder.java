@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.mealbox.common.MealboxEnum.OrderStatus;
 import com.mealbox.common.MealboxEnum.PaymentType;
 
@@ -32,6 +34,7 @@ public class FoodOrder {
 	private Employee employeeId; 
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus;
+	@CreationTimestamp
 	private LocalDate orderDate;
 	@Enumerated(EnumType.STRING)
 	private PaymentType paymentType; 

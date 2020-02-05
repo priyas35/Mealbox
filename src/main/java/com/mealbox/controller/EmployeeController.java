@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mealbox.constant.Constant;
 import com.mealbox.dto.LoginRequestDto;
 import com.mealbox.dto.LoginResponseDto;
+import com.mealbox.dto.OrderRequestDto;
+import com.mealbox.dto.OrderResponseDto;
 import com.mealbox.exception.EmployeeNotFoundException;
+import com.mealbox.exception.FoodNotFoundException;
 import com.mealbox.service.EmployeeService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -47,4 +51,11 @@ public class EmployeeController {
 		return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
 	}
 
+	@PostMapping("{/{employeeId}/orders}")
+	public ResponseEntity<OrderResponseDto> placeOrder(@Valid @RequestBody OrderRequestDto orderRequestDto,@PathVariable Long employeeId) throws EmployeeNotFoundException, FoodNotFoundException{
+		log.info("Entering into placeOrder() method of EmployeeController");
+		OrderResponseDto orderResponseDto=employeeService.placeOrder(orderRequestDto, employeeId);
+		orderResponseDto.setStatusCode(Constant.AUTHENTICATION_SUCCESSFUL_CODE);
+		return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);	
+	}
 }
