@@ -34,20 +34,20 @@ import com.mealbox.service.EmployeeService;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class EmployeeControllerTest {
-	
+
 	@InjectMocks
 	EmployeeController employeeController;
-	
+
 	@Mock
 	EmployeeService employeeService;
-	
+
 	Employee employee = new Employee();
 	FoodOrder foodOrder = new FoodOrder();
 	FoodOrderItem foodOrderItem = new FoodOrderItem();
 	List<FoodOrder> foodOrders = new ArrayList<>();
 	List<FoodOrderItem> foodOrderItems = new ArrayList<>();
 	Vendor vendor = new Vendor();
-	Food food  = new Food();
+	Food food = new Food();
 	VendorFood vendorFood = new VendorFood();
 	OrderDetailsResponseDto orderDetailsResponseDto = new OrderDetailsResponseDto();
 	List<OrderDetailsResponseDto> orderDetails = new ArrayList<>();
@@ -61,8 +61,8 @@ public class EmployeeControllerTest {
 
 		employee.setEmployeeId(1L);
 		employee.setPassword("priya");
-        employee.setEmployeeName("sri");
-        employee.setRole(Role.EMPLOYEE);
+		employee.setEmployeeName("sri");
+		employee.setRole(Role.EMPLOYEE);
 		food.setFoodId(1);
 		food.setFoodName("biryani");
 
@@ -94,21 +94,21 @@ public class EmployeeControllerTest {
 		loginResponseDto.setEmployeeName("sri");
 
 	}
-	
+
 	@Test
 	public void testGetMyOrders() throws EmployeeNotFoundException, OrderNotFoundException {
 		Mockito.when(employeeService.getMyOrder(1L)).thenReturn(orderDetails);
 		ResponseEntity<List<OrderDetailsResponseDto>> actual = employeeController.getOrderDetails(1L);
 		assertEquals(HttpStatus.OK, actual.getStatusCode());
 	}
-	
+
 	@Test(expected = EmployeeNotFoundException.class)
 	public void testGetMyOrdersForEmployeeNotFoundException() throws EmployeeNotFoundException, OrderNotFoundException {
 		employee.setEmployeeId(null);
 		employeeController.getOrderDetails(null);
-		
+
 	}
-	
+
 	@Test
 	public void testAuthenticateEmployee() throws EmployeeNotFoundException {
 		loginResponseDto.setMessage(Constant.AUTHENTICATION_SUCCESSFUL);
@@ -118,6 +118,5 @@ public class EmployeeControllerTest {
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 
 	}
-
 
 }

@@ -66,8 +66,6 @@ public class VendorControllerTest {
 
 		vendorFoodDto.setVendorId(1);
 	}
-	
-	
 
 	@Test
 	public void testGetItemListByVendorId() throws VendorNotFoundException {
@@ -105,6 +103,5 @@ public class VendorControllerTest {
 		ResponseEntity<List<Vendor>> actual = vendorController.getAllVendors();
 		assertEquals(HttpStatus.OK, actual.getStatusCode());
 	}
-	
 
 }

@@ -48,8 +48,8 @@ public class VendorServiceImplTest {
 	Food food = new Food();
 	VendorFood vendorFood = new VendorFood();
 	List<Vendor> vendors = new ArrayList<>();
-  
-  VendorDto vendorDto = new VendorDto();
+
+	VendorDto vendorDto = new VendorDto();
 	VendorFoodDto vendorFoodDto = new VendorFoodDto();
 	FoodDto foodDto = new FoodDto();
 
@@ -57,7 +57,7 @@ public class VendorServiceImplTest {
 
 	@Before
 	public void init() {
-    
+
 		vendor.setVendorId(1);
 		vendor.setVendorName("Moorthy Hotel");
 		vendors.add(vendor);
@@ -69,7 +69,7 @@ public class VendorServiceImplTest {
 		vendorFood.setFoodId(food);
 
 		vendorDto.setVendorName("Moorthy Hotel");
-		
+
 		vendorFoodDto.setVendorId(1);
 
 		foodDto.setFoodName("Mushroom Biriyani");
@@ -109,8 +109,8 @@ public class VendorServiceImplTest {
 		Mockito.when(vendorRepository.findAll()).thenReturn(vendors);
 		vendorServiceImpl.getAllVendors();
 	}
-  
-  @Test
+
+	@Test
 	public void testAddVendor() {
 		when(vendorRepository.save(Mockito.any())).thenReturn(vendor);
 		vendorServiceImpl.addVendor(vendorDto);
@@ -125,7 +125,7 @@ public class VendorServiceImplTest {
 		vendorServiceImpl.addVendorFood(vendorFoodDto);
 		assertEquals(1, food.getFoodId());
 	}
-	
+
 	@Test
 	public void testAddVendorFoodForFoodNotPresent() throws VendorNotFoundException {
 		when(vendorRepository.findById(vendorFoodDto.getVendorId())).thenReturn(Optional.of(vendor));
@@ -134,7 +134,7 @@ public class VendorServiceImplTest {
 		vendorServiceImpl.addVendorFood(vendorFoodDto);
 		assertEquals(1, food.getFoodId());
 	}
-	
+
 	@Test(expected = VendorNotFoundException.class)
 	public void testAddVendorFoodForVendorNotFound() throws VendorNotFoundException {
 		when(vendorRepository.findById(vendorFoodDto.getVendorId())).thenReturn(Optional.ofNullable(null));
