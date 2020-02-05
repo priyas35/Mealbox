@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +20,15 @@ import com.mealbox.common.converter.FoodConverter;
 import com.mealbox.constant.Constant;
 import com.mealbox.dto.ItemCategoryDto;
 import com.mealbox.dto.ItemDto;
+import com.mealbox.dto.VendorDto;
 import com.mealbox.entity.Food;
 import com.mealbox.entity.Vendor;
 import com.mealbox.entity.VendorFood;
 import com.mealbox.exception.VendorNotFoundException;
 import com.mealbox.repository.VendorFoodRepository;
 import com.mealbox.repository.VendorRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * In this VendorServiceImpl Class we can handled the methods of get item list
@@ -34,6 +40,8 @@ import com.mealbox.repository.VendorRepository;
  *
  */
 @Service
+@Slf4j
+@Transactional
 public class VendorServiceImpl implements VendorService {
 	private static final Logger logger = LoggerFactory.getLogger(VendorServiceImpl.class);
 
@@ -56,9 +64,7 @@ public class VendorServiceImpl implements VendorService {
 		List<VendorFood> vendorFoods = vendorFoodRepository.findByVendorId(vendor.get());
 
 		// Filter the foods from the vendor food list
-		List<Food> foods = vendorFoods.stream()
-				.map(vendorFood -> vendorFood.getFoodId())
-				.collect(Collectors.toList());
+		List<Food> foods = vendorFoods.stream().map(vendorFood -> vendorFood.getFoodId()).collect(Collectors.toList());
 
 		List<ItemCategoryDto> itemCategoryDtos = new ArrayList<>();
 
@@ -71,7 +77,7 @@ public class VendorServiceImpl implements VendorService {
 			// Filter the food by category wise and mapping the food entity values to dto.
 			List<ItemDto> itemList = foods.stream().filter(food -> food.getFoodType().equals(foodType))
 					.map(food -> FoodConverter.convertEntityToDto(food)).collect(Collectors.toList());
-			
+
 			// Set the itemList to response dto.
 			itemCategoryDto.setItemList(itemList);
 			itemCategoryDtos.add(itemCategoryDto);
@@ -80,4 +86,11 @@ public class VendorServiceImpl implements VendorService {
 		return itemCategoryDtos;
 	}
 
+	@Override
+	public void addVendor(VendorDto vendorDto) {
+		log.info("Add a new vendor based on the user input...");
+		Vendor vendor = new Vendor();
+		BeanUtils.copyProperties(vendorDto, vendor);
+		vendorRepository.save(vendor);
+	}
 }
