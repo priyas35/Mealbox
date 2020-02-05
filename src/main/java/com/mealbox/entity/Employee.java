@@ -19,7 +19,7 @@ public class Employee {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer employeeId;
+	private Long employeeId;
 	private String employeeName;
 	private String password;
 	private String email;
