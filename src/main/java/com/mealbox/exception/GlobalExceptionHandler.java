@@ -69,14 +69,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
 	}
 	
-	@ExceptionHandler(EmployeeNotFoundException.class)
-	public ResponseEntity<ErrorDto> employeeNotFoundException(){
-		ErrorDto errorDto= new ErrorDto();
-		errorDto.setErrorStatusMessage(Constant.EMPLOYEE_NOT_FOUND);
-		errorDto.setErrorStatusCode(HttpStatus.NOT_FOUND.value());
-		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
-	}
-	
 	@ExceptionHandler(FoodNotFoundException.class)
 	public ResponseEntity<ErrorDto> foodNotFoundException(){
 		ErrorDto errorDto= new ErrorDto();

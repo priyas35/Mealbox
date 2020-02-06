@@ -11,5 +11,5 @@ public class VendorListResponseDto {
 
 	private Integer statusCode;
 	private String message;
-	private List<ItemCategoryDto> ItemcategoryList;
+	private List<ItemCategoryDto> itemcategoryList;
 }

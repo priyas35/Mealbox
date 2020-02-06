@@ -167,10 +167,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 * @throws VendorNotFoundException - when the vendor is invalid
 	 * 
 	 */
-	private FoodOrderItem convertToFoodOrderItem(FoodDetail foodDetail,Integer vendorId,FoodOrder foodOrder) throws EmployeeNotFoundException, FoodNotFoundException, VendorNotFoundException {	
+	FoodOrderItem convertToFoodOrderItem(FoodDetail foodDetail,Integer vendorId,FoodOrder foodOrder) throws EmployeeNotFoundException, FoodNotFoundException, VendorNotFoundException {	
 		Optional<Vendor> vendor=vendorRepository.findById(vendorId);
 		if(!vendor.isPresent()) {
-			log.error("Exception occured in convertToFoodOrder() method of EmployeeServiceImpl:"+Constant.VENDOR_NOT_FOUND);
+			log.error("Exception occured in convertToFoodOrder():"+Constant.VENDOR_NOT_FOUND);
 			throw new VendorNotFoundException(Constant.VENDOR_NOT_FOUND);
 		}
 		

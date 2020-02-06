@@ -87,7 +87,7 @@ public class VendorServiceImpl implements VendorService {
 		List<VendorFood> vendorFoods = vendorFoodRepository.findByVendorId(vendor.get());
 
 		// Filter the foods from the vendor food list
-		List<Food> foods = vendorFoods.stream().map(vendorFood -> vendorFood.getFoodId()).collect(Collectors.toList());
+		List<Food> foods = vendorFoods.stream().map(VendorFood::getFoodId).collect(Collectors.toList());
 
 		List<ItemCategoryDto> itemCategoryDtos = new ArrayList<>();
 
