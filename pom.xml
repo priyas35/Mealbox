@@ -21,7 +21,11 @@
 			**/dto/*,
 			**/entity/*,
 			**/config/*,
-			**/constant/*
+			**/constant/*,
+			**/MealboxApplication.java/*,
+			**/PaymentRegistry.java/*, **/PaymentService.java/*
+			**/PayTm.java/*, **/PhonePe.java/*,
+			**/GlobalExceptionHandler.java/*
 		</sonar.coverage.exclusions>
 	</properties>
 

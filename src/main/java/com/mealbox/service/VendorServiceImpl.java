@@ -99,7 +99,7 @@ public class VendorServiceImpl implements VendorService {
 
 			// Filter the food by category wise and mapping the food entity values to dto.
 			List<ItemDto> itemList = foods.stream().filter(food -> food.getFoodType().equals(foodType))
-					.map(food -> FoodConverter.convertEntityToDto(food)).collect(Collectors.toList());
+					.map(FoodConverter::convertEntityToDto).collect(Collectors.toList());
 
 			// Set the itemList to response dto.
 			itemCategoryDto.setItemList(itemList);
