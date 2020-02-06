@@ -67,7 +67,7 @@ public class EmployeeController {
 	 * @throws FoodNotFoundException - thrown when the Food ordered doesn't belong to the existing menu
 	 * @since 05-February-2020
 	 */
-	@PostMapping("{/{employeeId}/orders}")
+	@PostMapping("/{employeeId}/orders")
 	public ResponseEntity<OrderResponseDto> placeOrder(@Valid @RequestBody OrderRequestDto orderRequestDto,
 			@PathVariable Long employeeId) throws EmployeeNotFoundException, FoodNotFoundException {
 		log.info("Entering into placeOrder() method of EmployeeController");

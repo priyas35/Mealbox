@@ -16,9 +16,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service("PAYTM")
 @Slf4j
-public class PayTm {
 
-	public class PhonePe implements PaymentService {
+
+	public class PayTm implements PaymentService {
 
 		@Override
 		public String payment() {
@@ -27,4 +27,3 @@ public class PayTm {
 		}
 
 	}
-}
