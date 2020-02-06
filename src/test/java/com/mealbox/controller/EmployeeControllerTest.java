@@ -21,6 +21,8 @@ import com.mealbox.constant.Constant;
 import com.mealbox.dto.LoginRequestDto;
 import com.mealbox.dto.LoginResponseDto;
 import com.mealbox.dto.OrderDetailsResponseDto;
+import com.mealbox.dto.OrderRequestDto;
+import com.mealbox.dto.OrderResponseDto;
 import com.mealbox.dto.OrderedFoodDto;
 import com.mealbox.entity.Employee;
 import com.mealbox.entity.Food;
@@ -29,6 +31,7 @@ import com.mealbox.entity.FoodOrderItem;
 import com.mealbox.entity.Vendor;
 import com.mealbox.entity.VendorFood;
 import com.mealbox.exception.EmployeeNotFoundException;
+import com.mealbox.exception.FoodNotFoundException;
 import com.mealbox.exception.OrderNotFoundException;
 import com.mealbox.service.EmployeeService;
 
@@ -55,6 +58,8 @@ public class EmployeeControllerTest {
 	List<OrderedFoodDto> orderedFoods = new ArrayList<>();
 	LoginResponseDto loginResponseDto = new LoginResponseDto();
 	LoginRequestDto loginRequestDto = new LoginRequestDto();
+	OrderRequestDto orderRequestDto = new OrderRequestDto();
+	OrderResponseDto orderResponseDto = new OrderResponseDto();
 
 	@Before
 	public void init() {
@@ -117,6 +122,14 @@ public class EmployeeControllerTest {
 		ResponseEntity<LoginResponseDto> result = employeeController.authenticateEmployee(loginRequestDto);
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 
+	}
+	
+	@Test
+	public void testPlaceOrder() throws EmployeeNotFoundException, FoodNotFoundException {
+		employee.setEmployeeId(1L);
+	Mockito.when(employeeService.placeOrder(orderRequestDto, 1L)).thenReturn(orderResponseDto);
+	ResponseEntity<OrderResponseDto> response=employeeController.placeOrder(orderRequestDto, 1L);
+	assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 
 }

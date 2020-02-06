@@ -16,9 +16,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.mealbox.common.MealboxEnum.OrderStatus;
 import com.mealbox.common.MealboxEnum.Role;
+import com.mealbox.dto.FoodDetail;
 import com.mealbox.dto.LoginRequestDto;
 import com.mealbox.dto.LoginResponseDto;
 import com.mealbox.dto.OrderDetailsResponseDto;
+import com.mealbox.dto.OrderRequestDto;
+import com.mealbox.dto.OrderResponseDto;
 import com.mealbox.dto.OrderedFoodDto;
 import com.mealbox.entity.Employee;
 import com.mealbox.entity.Food;
@@ -27,10 +30,15 @@ import com.mealbox.entity.FoodOrderItem;
 import com.mealbox.entity.Vendor;
 import com.mealbox.entity.VendorFood;
 import com.mealbox.exception.EmployeeNotFoundException;
+import com.mealbox.exception.FoodNotFoundException;
 import com.mealbox.exception.OrderNotFoundException;
+import com.mealbox.exception.VendorNotFoundException;
 import com.mealbox.repository.EmployeeRepository;
 import com.mealbox.repository.FoodOrderItemRepository;
 import com.mealbox.repository.FoodOrderRepository;
+import com.mealbox.repository.FoodRepository;
+import com.mealbox.repository.VendorFoodRepository;
+import com.mealbox.repository.VendorRepository;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class EmployeeServiceTest {
@@ -46,6 +54,15 @@ public class EmployeeServiceTest {
 
 	@Mock
 	FoodOrderItemRepository foodOrderItemRepository;
+	
+	@Mock
+	VendorRepository vendorRepository;
+	
+	@Mock
+	FoodRepository foodRepository;
+	
+	@Mock
+	VendorFoodRepository vendorFoodRepository;
 
 	Employee employee = new Employee();
 	FoodOrder foodOrder = new FoodOrder();
@@ -61,6 +78,10 @@ public class EmployeeServiceTest {
 	List<OrderedFoodDto> orderedFoods = new ArrayList<>();
 	LoginResponseDto loginResponseDto = new LoginResponseDto();
 	LoginRequestDto loginRequestDto = new LoginRequestDto();
+	OrderRequestDto orderRequestDto = new OrderRequestDto();
+	OrderResponseDto orderResponseDto = new OrderResponseDto();
+	FoodDetail foodDetail= new FoodDetail();
+	
 
 	@Before
 	public void init() {
@@ -137,5 +158,45 @@ public class EmployeeServiceTest {
 		employeeServiceImpl.authenticateEmployee(loginRequestDto);
 
 	}
+	
+	@Test(expected = EmployeeNotFoundException.class)
+	public void testPlaceOrderNoEmployee() throws EmployeeNotFoundException, FoodNotFoundException {
+	Mockito.when(employeeRepository.findByEmployeeId(11L)).thenReturn(Optional.of(employee));
+	employeeServiceImpl. placeOrder( orderRequestDto, 1L);
+	}
+	
+	@Test(expected = VendorNotFoundException.class)
+	public void convertToFoodOrderItem() throws EmployeeNotFoundException, FoodNotFoundException, VendorNotFoundException {
+	Mockito.when(vendorRepository.findById(111)).thenReturn(Optional.of(vendor));
+	employeeServiceImpl.convertToFoodOrderItem(foodDetail, 1, foodOrder);
+	}
+
+
+	
+	
+	@Test(expected = FoodNotFoundException.class)
+	public void convertToFoodOrderItemNegative() throws EmployeeNotFoundException, FoodNotFoundException, VendorNotFoundException {
+	foodDetail.setFoodId(11);
+	Mockito.when(vendorRepository.findById(1)).thenReturn(Optional.of(vendor));
+	Mockito.when(foodRepository.findById(6)).thenReturn(Optional.of(food));
+	employeeServiceImpl.convertToFoodOrderItem(foodDetail, 1, foodOrder);
+	}
+	
+	@Test(expected = FoodNotFoundException.class)
+	public void convertToFoodOrderItemVendorFoodNegative() throws EmployeeNotFoundException, FoodNotFoundException, VendorNotFoundException {
+	foodDetail.setFoodId(6);
+	Mockito.when(vendorRepository.findById(1)).thenReturn(Optional.of(vendor));
+	Mockito.when(foodRepository.findById(6)).thenReturn(Optional.of(food));
+	Food food1= new Food();
+	Mockito.when(vendorFoodRepository.findByVendorIdAndFoodId(vendor,food1)).thenReturn(Optional.of(vendorFood));
+	employeeServiceImpl.convertToFoodOrderItem(foodDetail, 1, foodOrder);
+	}
+
+	
+
+
+	
+	
+
 
 }
